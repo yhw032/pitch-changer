@@ -10,6 +10,7 @@ import os
 import numpy as np
 import librosa
 import soundfile as sf
+import pyrubberband as pyrb
 
 
 def percentage_to_semitones(percentage):
@@ -48,25 +49,14 @@ def change_pitch(input_file, output_file, pitch_percentage):
         print("Applying pitch shift...")
         if audio.ndim == 1:
             # Mono audio
-            audio_shifted = librosa.effects.pitch_shift(
-                audio, 
-                sr=sample_rate, 
-                n_steps=semitones,
-                bins_per_octave=24,
-                res_type='soxr_hq'
-            )
+            audio_shifted = pyrb.pitch_shift(audio, sample_rate, semitones)
         else:
             # Stereo or multi-channel audio
-            audio_shifted = np.array([
-                librosa.effects.pitch_shift(
-                    audio[i], 
-                    sr=sample_rate, 
-                    n_steps=semitones,
-                    bins_per_octave=24,
-                    res_type='soxr_hq'
-                )
-                for i in range(audio. shape[0])
-            ])
+            # Rubberband expects (samples, channels) format
+            audio_transposed = audio.T
+            audio_shifted = pyrb.pitch_shift(audio_transposed, sample_rate, semitones)
+            # Convert back to (channels, samples)
+            audio_shifted = audio_shifted.T
         
         # Normalize audio to prevent clipping (optional but recommended)
         max_val = np.abs(audio_shifted).max()

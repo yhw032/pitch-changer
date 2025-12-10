@@ -42,7 +42,7 @@ def change_pitch(input_file, output_file, pitch_percentage):
         
         # Convert percentage to semitones
         semitones = percentage_to_semitones(pitch_percentage)
-        print(f"Pitch change: {pitch_percentage}% ({semitones:. 2f} semitones)")
+        print(f"Pitch change: {pitch_percentage}% ({semitones:.2f} semitones)")
         
         # Apply pitch shift
         print("Applying pitch shift...")

@@ -92,3 +92,5 @@ docs/_build/
 coverage/
 celerybeat-schedule
 files/
+inputs/
+outputs/

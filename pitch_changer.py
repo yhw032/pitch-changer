@@ -48,17 +48,40 @@ def change_pitch(input_file, output_file, pitch_percentage):
         print("Applying pitch shift...")
         if audio.ndim == 1:
             # Mono audio
-            audio_shifted = librosa.effects.pitch_shift(audio, sr=sample_rate, n_steps=semitones)
+            audio_shifted = librosa.effects.pitch_shift(
+                audio, 
+                sr=sample_rate, 
+                n_steps=semitones
+                bins_per_octave=24
+                res_type='soxr_hq'
+            )
         else:
             # Stereo or multi-channel audio
             audio_shifted = np.array([
-                librosa.effects.pitch_shift(audio[i], sr=sample_rate, n_steps=semitones)
+                librosa.effects.pitch_shift(
+                    audio[i], 
+                    sr=sample_rate, 
+                    n_steps=semitones
+                    bins_per_octave=24
+                    res_type='soxr_hq'
+                )
                 for i in range(audio. shape[0])
             ])
         
+        # Normalize audio to prevent clipping (optional but recommended)
+        max_val = np.abs(audio_shifted).max()
+        if max_val > 1.0:
+            print(f"Normalizing audio (peak: {max_val:.2f})")
+            audio_shifted = audio_shifted / max_val * 0.95
+        
         # Save the output file
         print(f"Saving output file: {output_file}")
-        sf.write(output_file, audio_shifted. T if audio.ndim > 1 else audio_shifted, sample_rate)
+        sf.write(
+            output_file, 
+            audio_shifted.T if audio. ndim > 1 else audio_shifted, 
+            sample_rate,
+            subtype='PCM_24'
+        )
         
         print("Done!  Pitch changed successfully.")
         

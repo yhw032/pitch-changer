@@ -51,7 +51,7 @@ def change_pitch(input_file, output_file, pitch_percentage):
             audio_shifted = librosa.effects.pitch_shift(
                 audio, 
                 sr=sample_rate, 
-                n_steps=semitones
+                n_steps=semitones,
                 bins_per_octave=24
                 res_type='soxr_hq'
             )
@@ -61,7 +61,7 @@ def change_pitch(input_file, output_file, pitch_percentage):
                 librosa.effects.pitch_shift(
                     audio[i], 
                     sr=sample_rate, 
-                    n_steps=semitones
+                    n_steps=semitones,
                     bins_per_octave=24
                     res_type='soxr_hq'
                 )

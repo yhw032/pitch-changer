@@ -52,7 +52,7 @@ def change_pitch(input_file, output_file, pitch_percentage):
                 audio, 
                 sr=sample_rate, 
                 n_steps=semitones,
-                bins_per_octave=24
+                bins_per_octave=24,
                 res_type='soxr_hq'
             )
         else:
@@ -62,7 +62,7 @@ def change_pitch(input_file, output_file, pitch_percentage):
                     audio[i], 
                     sr=sample_rate, 
                     n_steps=semitones,
-                    bins_per_octave=24
+                    bins_per_octave=24,
                     res_type='soxr_hq'
                 )
                 for i in range(audio. shape[0])
